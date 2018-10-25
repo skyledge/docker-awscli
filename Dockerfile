@@ -1,6 +1,13 @@
-FROM python:3.7-slim
+FROM alpine:3.8 
 
-RUN pip install awscli --upgrade --user
-RUN echo 'export PATH=~/.local/bin:$PATH'>>root/.bashrc
+ENV AWS_CLI_VERSION 1.16.41
 
-CMD ["/bin/bash"]
+RUN apk --no-cache update && \
+    apk --no-cache add bash && \
+    apk --no-cache add python py-pip py-setuptools ca-certificates less && \
+    pip --no-cache-dir install awscli==${AWS_CLI_VERSION} && \
+    rm -rf /var/cache/apk/*
+
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /data
