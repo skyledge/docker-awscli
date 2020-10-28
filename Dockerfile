@@ -1,10 +1,10 @@
-FROM node:10-alpine 
+FROM node:15-alpine3.12
 
 ENV AWS_CLI_VERSION 1.16.41
-ENV DOCKER_VERSION 18.06.1
+ENV DOCKER_VERSION 19.03.9
 
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.8/main" > /etc/apk/repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.8/community" >> /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/v3.12/main" > /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories
 
 # install chromium
 RUN apk -U --no-cache \
@@ -25,13 +25,13 @@ ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
 
 RUN apk --no-cache update && apk --no-cache add wget && \
-    wget -q https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}-ce.tgz -O /tmp/docker.tar.gz && \
+    wget -q https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O /tmp/docker.tar.gz && \
     tar -xzf /tmp/docker.tar.gz -C /tmp/ && \
     cp /tmp/docker/docker* /usr/local/bin && \
     chmod +x /usr/local/bin/docker*
 
 RUN apk --no-cache update && \
-    apk --no-cache add python py-pip py-setuptools bash tar ca-certificates less jq && \
+    apk --no-cache add python3 py-pip py-setuptools bash tar ca-certificates less jq && \
     pip --no-cache-dir install awscli==${AWS_CLI_VERSION} && \
     rm -rf /var/cache/apk/* && \
     wget https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy -O /usr/local/bin/ecs-deploy && \
