@@ -1,10 +1,10 @@
-FROM node:16-alpine3.15
+FROM node:18-alpine3.17
 
 ENV AWS_CLI_VERSION 1.16.41
-ENV DOCKER_VERSION 19.03.9
+ENV DOCKER_VERSION 23.0.6
 
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/v3.17/main" > /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/v3.17/community" >> /etc/apk/repositories
 
 # install chromium
 RUN apk -U --no-cache \
