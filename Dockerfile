@@ -31,18 +31,7 @@ RUN wget -q https://download.docker.com/linux/static/stable/x86_64/docker-${DOCK
     cp /tmp/docker/docker* /usr/local/bin && \
     chmod +x /usr/local/bin/docker*
 
-#ENV VIRTUAL_ENV=/opt/venv
-#ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Set up a virtual environment and install awscli there
-#RUN python3 -m venv $VIRTUAL_ENV && \
-#    . $VIRTUAL_ENV/bin/activate && \
-#    pip install --no-cache-dir awscli==${AWS_CLI_VERSION}
-
-RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install
-
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir awscli && ln -s /opt/venv/bin/aws /usr/local/bin/aws
 
 # Install ecs-deploy
 RUN wget https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy -O /usr/local/bin/ecs-deploy && \
