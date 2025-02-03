@@ -24,7 +24,7 @@ RUN apk -U --no-cache \
 ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
 
-RUN apk --no-cache update && apk --no-cache add wget python3 py3-pip py3-setuptools bash tar ca-certificates less jq
+RUN apk --no-cache update && apk --no-cache add wget python3 py3-pip py3-setuptools bash tar ca-certificates less jq git
 
 RUN wget -q https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O /tmp/docker.tar.gz && \
     tar -xzf /tmp/docker.tar.gz -C /tmp/ && \
