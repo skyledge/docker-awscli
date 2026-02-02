@@ -3,8 +3,8 @@ FROM node:22-alpine3.20
 #ENV AWS_CLI_VERSION 1.27.136
 ENV DOCKER_VERSION 27.0.1
 
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.20/main" > /etc/apk/repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/v3.20/community" >> /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.20/main" > /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.20/community" >> /etc/apk/repositories
 
 # install chromium
 RUN apk -U --no-cache \
