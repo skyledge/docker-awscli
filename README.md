@@ -13,7 +13,13 @@ A lightweight Docker image for running AWS CLI commands in CI/CD pipelines. Buil
 
 ## Quick Start
 
-Pull the image from Docker Hub:
+Pull the latest image from Docker Hub:
+
+```bash
+docker pull skyledge/docker-awscli:latest
+```
+
+Or pin to a specific version:
 
 ```bash
 docker pull skyledge/docker-awscli:<version>
@@ -22,52 +28,60 @@ docker pull skyledge/docker-awscli:<version>
 Run AWS CLI commands:
 
 ```bash
-docker run --rm -v ~/.aws:/root/.aws skyledge/docker-awscli:<version> aws s3 ls
+docker run --rm -v ~/.aws:/root/.aws skyledge/docker-awscli:latest aws s3 ls
 ```
 
-## Building the Image
+## Supported Platforms
 
-### Prerequisites
+Images are built for the following platforms:
 
-- Docker with buildx support
-- Docker Hub account with write permissions
+- `linux/amd64`
+- `linux/arm64`
 
-### Build Steps
+## Publishing a New Release
 
-1. **Login to Docker Hub**
+Builds and pushes are fully automated via the **Build and Push Multi-Arch Docker Image** GitHub Actions workflow. A new image is built and pushed to Docker Hub automatically whenever a tag is pushed to the repository.
 
-   ```bash
-   docker login -u <username>
-   ```
+### Steps to Release
 
-   > **Note:** Use a Personal Access Token (PAT) from Docker Hub → Account Settings → Security → Personal Access Tokens. Ensure the token has **Write** permissions.
-
-2. **Build the Image**
-
-   Build for linux/amd64 platform:
+1. **Create and push a new tag**
 
    ```bash
-   docker buildx build --platform linux/amd64 -t docker-awscli:<version> .
+   git tag <version>
+   git push origin <version>
    ```
 
-3. **Tag the Image**
+2. **GitHub Actions takes over**
 
-   ```bash
-   docker image tag docker-awscli:<version> skyledge/docker-awscli:<version>
-   ```
+   The workflow will:
+   - Build the image for both `linux/amd64` and `linux/arm64` using Docker Buildx and QEMU
+   - Push the image to Docker Hub tagged as both `skyledge/docker-awscli:<version>` and `skyledge/docker-awscli:latest`
 
-4. **Push to Docker Hub**
+### Required Repository Secrets
 
-   ```bash
-   docker push skyledge/docker-awscli:<version>
-   ```
+The following secrets must be configured in the repository's **Settings → Secrets and variables → Actions**:
 
-### Multi-Platform Build (Optional)
+| Secret | Description |
+|---|---|
+| `DOCKERHUB_USERNAME` | Docker Hub username |
+| `DOCKERHUB_TOKEN` | Docker Hub Personal Access Token with **Write** permissions |
 
-To build for multiple platforms:
+> **Note:** To create a Personal Access Token, go to Docker Hub → Account Settings → Security → Personal Access Tokens.
+
+## Building Locally
+
+To build the image locally for testing:
 
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 \
   -t skyledge/docker-awscli:<version> \
-  --push .
+  .
+```
+
+To build and load a single-platform image for immediate local use:
+
+```bash
+docker buildx build --platform linux/amd64 \
+  -t skyledge/docker-awscli:<version> \
+  --load .
 ```
