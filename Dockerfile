@@ -1,4 +1,4 @@
-FROM node:22-alpine3.20
+FROM node:24.17-alpine3.23
 
 ENV DOCKER_VERSION=27.0.1 \
     CHROME_BIN=/usr/bin/chromium-browser \
